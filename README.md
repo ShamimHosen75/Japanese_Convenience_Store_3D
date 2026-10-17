@@ -1,4 +1,6 @@
-# Konbini – miniature 3D diorama
+# Hikari Konbini (ひかりコンビニ) – miniature 3D diorama
+
+**Live demo:** https://hikari-konbini-3d.vercel.app/
 
 An interactive, low-poly miniature Japanese convenience store on a floating base, with a full
 day → sunset → dusk → night cycle, rain, wet reflections and fireflies. Everything is built
