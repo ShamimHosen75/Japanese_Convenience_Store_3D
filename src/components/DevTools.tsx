@@ -1,9 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { Suspense, lazy, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { useFrame, useThree } from '@react-three/fiber'
 import { env } from '../systems/dayNight'
 import { useSceneStore } from '../store/useSceneStore'
 import { cameraApi } from '../systems/cameraRig'
+
+const Perf = lazy(() => import('r3f-perf').then((m) => ({ default: () => <m.Perf position="top-left" minimal /> })))
 
 /** DEV only: exposes live stats (fps, draw calls, GPU memory) on window.__qa for the QA scripts. */
 export default function DevTools() {
@@ -39,5 +41,10 @@ export default function DevTools() {
       a.t0 = now
     }
   }, -100)
-  return null
+  // r3f-perf overlay (fps / draw calls / memory): add ?perf to the URL
+  return new URLSearchParams(location.search).has('perf') ? (
+    <Suspense fallback={null}>
+      <Perf />
+    </Suspense>
+  ) : null
 }
