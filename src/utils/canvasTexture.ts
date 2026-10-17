@@ -46,7 +46,7 @@ export function bannerTexture(name: string, tagline: string, jp: string) {
   // name
   ctx.textBaseline = 'middle'
   ctx.fillStyle = '#ffffff'
-  ctx.font = `800 150px ${FONT}`
+  fitFont(ctx, name.toUpperCase(), 800, 150, 1280)
   ctx.textAlign = 'left'
   ctx.fillText(name.toUpperCase(), 90, 138)
   const nameW = ctx.measureText(name.toUpperCase()).width
@@ -58,12 +58,19 @@ export function bannerTexture(name: string, tagline: string, jp: string) {
   ctx.fill()
   ctx.fillStyle = '#ffffff'
   ctx.textAlign = 'center'
-  ctx.font = `800 82px ${FONT}`
+  fitFont(ctx, tagline, 800, 82, pw - 60)
   ctx.fillText(tagline, px + pw / 2, 118)
-  ctx.font = `600 38px ${FONT}`
+  fitFont(ctx, jp, 600, 38, pw - 60)
   ctx.fillStyle = '#fff4e0'
   ctx.fillText(jp, px + pw / 2, 176)
   return toTexture(canvas)
+}
+
+/** Set ctx.font at `size` px, shrinking it until `text` fits in `maxW` px (longer store names). */
+function fitFont(ctx: CanvasRenderingContext2D, text: string, weight: number, size: number, maxW: number) {
+  ctx.font = `${weight} ${size}px ${FONT}`
+  const w = ctx.measureText(text).width
+  if (w > maxW) ctx.font = `${weight} ${Math.floor((size * maxW) / w)}px ${FONT}`
 }
 
 /** Round orange logo for the tall pole sign (plus a rectangular name plate underneath). */
@@ -86,7 +93,7 @@ export function logoTexture(name: string) {
   ctx.textBaseline = 'middle'
   ctx.fillText(name.charAt(0).toUpperCase(), 256, 252)
   ctx.fillStyle = '#ffffff'
-  ctx.font = `800 78px ${FONT}`
+  fitFont(ctx, name.toUpperCase(), 800, 78, 440)
   ctx.fillText(name.toUpperCase(), 256, 545)
   return toTexture(canvas)
 }
